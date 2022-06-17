@@ -22,7 +22,7 @@ void app_main()
     }
     ESP_ERROR_CHECK(ret);
 
-    printf("ESP_WIFI_MODE_STA\n");
+    printf("[main]: ESP_WIFI_MODE_STA\n");
     wifi_init_sta();
 
     /* MQQT start and conected to AWS broker */
