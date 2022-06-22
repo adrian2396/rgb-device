@@ -32,7 +32,8 @@
 
 typedef struct s13683
 {
-    uint8_t data[DATA_LENGTH];
+    uint8_t read_data[DATA_LENGTH];
+    uint16_t data[DATA_LENGTH - 6];
 } rgb_sensor;
 
 /**

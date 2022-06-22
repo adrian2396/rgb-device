@@ -52,16 +52,16 @@ esp_err_t i2c_master_sensor_test(i2c_port_t i2c_num, rgb_sensor *arg)
     cmd = i2c_cmd_link_create();
     i2c_master_start(cmd);                                           /* restart condition */
     i2c_master_write_byte(cmd, 0x55, ACK_CHECK_EN);                  /* 01010101 => 0x54 */
-    i2c_master_read_byte(cmd, &arg->data[0], ACK_VAL);               /* Manual timing register (0x01) */
-    i2c_master_read_byte(cmd, &arg->data[1], ACK_VAL);               /* Manual timing register (0x02) */
-    i2c_master_read_byte(cmd, &arg->data[2], ACK_VAL);               /* RED_H READ */
-    i2c_master_read_byte(cmd, &arg->data[3], ACK_VAL);               /* RED_L READ */
-    i2c_master_read_byte(cmd, &arg->data[4], ACK_VAL);               /* GREEN_H READ */
-    i2c_master_read_byte(cmd, &arg->data[5], ACK_VAL);               /* GREEN_L READ */
-    i2c_master_read_byte(cmd, &arg->data[6], ACK_VAL);               /* BLUE_H READ */
-    i2c_master_read_byte(cmd, &arg->data[7], ACK_VAL);               /* BLUE_L READ */
-    i2c_master_read_byte(cmd, &arg->data[8], ACK_VAL);               /* CH_H READ */
-    i2c_master_read_byte(cmd, &arg->data[9], NACK_VAL);              /* CH_L READ */
+    i2c_master_read_byte(cmd, &arg->read_data[0], ACK_VAL);               /* Manual timing register (0x01) */
+    i2c_master_read_byte(cmd, &arg->read_data[1], ACK_VAL);               /* Manual timing register (0x02) */
+    i2c_master_read_byte(cmd, &arg->read_data[2], ACK_VAL);               /* RED_H READ */
+    i2c_master_read_byte(cmd, &arg->read_data[3], ACK_VAL);               /* RED_L READ */
+    i2c_master_read_byte(cmd, &arg->read_data[4], ACK_VAL);               /* GREEN_H READ */
+    i2c_master_read_byte(cmd, &arg->read_data[5], ACK_VAL);               /* GREEN_L READ */
+    i2c_master_read_byte(cmd, &arg->read_data[6], ACK_VAL);               /* BLUE_H READ */
+    i2c_master_read_byte(cmd, &arg->read_data[7], ACK_VAL);               /* BLUE_L READ */
+    i2c_master_read_byte(cmd, &arg->read_data[8], ACK_VAL);               /* CH_H READ */
+    i2c_master_read_byte(cmd, &arg->read_data[9], NACK_VAL);              /* CH_L READ */
     i2c_master_stop(cmd);
     
     ret = i2c_master_cmd_begin(i2c_num, cmd, 1000 / portTICK_PERIOD_MS);
