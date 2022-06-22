@@ -10,9 +10,7 @@ rgb_sensor *rgb;
 
 void app_main() 
 {
-    /* I2C master initializaction */
-    ESP_ERROR_CHECK(i2c_master_init());
-
+    
     /* Connect esp32 to a wifi network (station) */
     //Initialize NVS
     esp_err_t ret = nvs_flash_init();
@@ -25,6 +23,10 @@ void app_main()
     printf("[main]: ESP_WIFI_MODE_STA\n");
     wifi_init_sta();
 
+    /* I2C master initializaction */
+    ESP_ERROR_CHECK(i2c_master_init());
+
+
     /* MQQT start and conected to AWS broker */
 
     
@@ -34,6 +36,8 @@ void app_main()
     /* S13683 Task Created */
     xTaskCreate(s13673_task, "i2c_test_task_0", 1024 * 2, &rgb, 10, NULL);
 
+    /* Driver LED Task Created */
+    
     /* Oled Task Created */
 
     /* Buttons Task Created */

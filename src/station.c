@@ -8,7 +8,7 @@ const char *ssid = "adrian";
 const char *password = "123456789a";
 
 
-static void event_handler(void* arg, esp_event_base_t event_base,
+void event_handler(void* arg, esp_event_base_t event_base,
                                 int32_t event_id, void* event_data)
 {
     if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_START) {
@@ -26,7 +26,7 @@ static void event_handler(void* arg, esp_event_base_t event_base,
         printf("\n");
     } else if (event_base == IP_EVENT && event_id == IP_EVENT_STA_GOT_IP) {
         ip_event_got_ip_t* event = (ip_event_got_ip_t*) event_data;
-        printf("[station]: Got IP:" IPSTR, IP2STR(&event->ip_info.ip));
+        printf("[station]: IP: " IPSTR, IP2STR(&event->ip_info.ip));
         printf("\n");
         s_retry_num = 0;
         xEventGroupSetBits(s_wifi_event_group, WIFI_CONNECTED_BIT);

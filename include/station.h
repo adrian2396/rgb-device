@@ -15,7 +15,7 @@
 #include "lwip/err.h"
 #include "lwip/sys.h"
 
-#define EXAMPLE_ESP_MAXIMUM_RETRY  5
+#define EXAMPLE_ESP_MAXIMUM_RETRY  100
 
 /* The event group allows multiple bits for each event, but we only care about two events:
  * - we are connected to the AP with an IP
@@ -24,7 +24,7 @@
 #define WIFI_FAIL_BIT      BIT1
 
 
-static void event_handler(void* arg, esp_event_base_t event_base,
+void event_handler(void* arg, esp_event_base_t event_base,
                                 int32_t event_id, void* event_data);
 
 void wifi_init_sta(void);

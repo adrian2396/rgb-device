@@ -19,14 +19,20 @@ void s13673_task(rgb_sensor * arg)
             printf("RGB_TASK  MASTER READ S13673 SENSOR\n");
             printf("***********************************\n");
             
-            printf("RRD_H  :   %02x   -----   %03d\n", rgb.data[0], rgb.data[0]);
-            printf("RED_L  :   %02x   -----   %03d\n", rgb.data[1], rgb.data[1]);
-            printf("GREEN_H:   %02x   -----   %03d\n", rgb.data[2], rgb.data[2]);
-            printf("GREEN_L:   %02x   -----   %03d\n", rgb.data[3], rgb.data[3]);
-            printf("BLUE_H :   %02x   -----   %03d\n", rgb.data[4], rgb.data[4]);
-            printf("BLUE_L :   %02x   -----   %03d\n", rgb.data[5], rgb.data[5]);
-            printf("CH_H   :   %02x   -----   %03d\n", rgb.data[6], rgb.data[6]);
-            printf("CH_L   :   %02x   -----   %03d\n", rgb.data[7], rgb.data[7]);
+
+            printf("RRD_H  :   %02x   -----   %03d\n", rgb.data[2], rgb.data[2]);
+            printf("RED_L  :   %02x   -----   %03d\n", rgb.data[3], rgb.data[3]);
+            printf("GREEN_H:   %02x   -----   %03d\n", rgb.data[4], rgb.data[4]);
+            printf("GREEN_L:   %02x   -----   %03d\n", rgb.data[5], rgb.data[5]);
+            printf("BLUE_H :   %02x   -----   %03d\n", rgb.data[6], rgb.data[6]);
+            printf("BLUE_L :   %02x   -----   %03d\n", rgb.data[7], rgb.data[7]);
+            printf("CH_H   :   %02x   -----   %03d\n", rgb.data[8], rgb.data[8]);
+            printf("CH_L   :   %02x   -----   %03d\n", rgb.data[9], rgb.data[9]);
+            printf("\n");
+            printf("RED   : %03d | %03d\n", rgb.data[2], rgb.data[3]);
+            printf("GREEN : %03d | %03d\n", rgb.data[4], rgb.data[5]);
+            printf("BLUE  : %03d | %03d\n", rgb.data[6], rgb.data[7]);
+            printf("CH    : %03d | %03d\n", rgb.data[8], rgb.data[9]);
         } else {
             printf("[tasks]: %s: No ack, sensor not connected...skip...\n", esp_err_to_name(ret));
         }

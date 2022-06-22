@@ -6,9 +6,9 @@ esp_err_t i2c_master_init(void)
     i2c_config_t conf = {
         .mode = I2C_MODE_MASTER,
         .sda_io_num = I2C_MASTER_SDA_IO,
-        .sda_pullup_en = 1,
+        .sda_pullup_en = GPIO_PULLUP_ENABLE,
         .scl_io_num = I2C_MASTER_SCL_IO,
-        .scl_pullup_en = 1,
+        .scl_pullup_en = GPIO_PULLUP_ENABLE,
         .master.clk_speed = I2C_MASTER_FREQ_HZ,
         // .clk_flags = 0,          /*!< Optional, you can use I2C_SCLK_SRC_FLAG_* flags to choose i2c source clock here. */
     };
@@ -42,7 +42,7 @@ esp_err_t i2c_master_sensor_test(i2c_port_t i2c_num, rgb_sensor *arg)
         return ret;
     }
 
-    vTaskDelay(200/portTICK_PERIOD_MS);                              /* delay > integration time */
+    vTaskDelay(6/portTICK_PERIOD_MS);                              /* delay > integration time */
     
     cmd = i2c_cmd_link_create();
     i2c_master_start(cmd);                                           /* start condition */
@@ -52,14 +52,16 @@ esp_err_t i2c_master_sensor_test(i2c_port_t i2c_num, rgb_sensor *arg)
     cmd = i2c_cmd_link_create();
     i2c_master_start(cmd);                                           /* restart condition */
     i2c_master_write_byte(cmd, 0x55, ACK_CHECK_EN);                  /* 01010101 => 0x54 */
-    i2c_master_read_byte(cmd, &arg->data[0], ACK_VAL);               /* RED_H READ */
-    i2c_master_read_byte(cmd, &arg->data[1], ACK_VAL);               /* RED_L READ */
-    i2c_master_read_byte(cmd, &arg->data[2], ACK_VAL);               /* GREEN_H READ */
-    i2c_master_read_byte(cmd, &arg->data[3], ACK_VAL);               /* GREEN_L READ */
-    i2c_master_read_byte(cmd, &arg->data[4], ACK_VAL);               /* BLUE_H READ */
-    i2c_master_read_byte(cmd, &arg->data[5], ACK_VAL);               /* BLUE_L READ */
-    i2c_master_read_byte(cmd, &arg->data[6], ACK_VAL);               /* CH_H READ */
-    i2c_master_read_byte(cmd, &arg->data[7], NACK_VAL);              /* CH_L READ */
+    i2c_master_read_byte(cmd, &arg->data[0], ACK_VAL);               /* Manual timing register (0x01) */
+    i2c_master_read_byte(cmd, &arg->data[1], ACK_VAL);               /* Manual timing register (0x02) */
+    i2c_master_read_byte(cmd, &arg->data[2], ACK_VAL);               /* RED_H READ */
+    i2c_master_read_byte(cmd, &arg->data[3], ACK_VAL);               /* RED_L READ */
+    i2c_master_read_byte(cmd, &arg->data[4], ACK_VAL);               /* GREEN_H READ */
+    i2c_master_read_byte(cmd, &arg->data[5], ACK_VAL);               /* GREEN_L READ */
+    i2c_master_read_byte(cmd, &arg->data[6], ACK_VAL);               /* BLUE_H READ */
+    i2c_master_read_byte(cmd, &arg->data[7], ACK_VAL);               /* BLUE_L READ */
+    i2c_master_read_byte(cmd, &arg->data[8], ACK_VAL);               /* CH_H READ */
+    i2c_master_read_byte(cmd, &arg->data[9], NACK_VAL);              /* CH_L READ */
     i2c_master_stop(cmd);
     
     ret = i2c_master_cmd_begin(i2c_num, cmd, 1000 / portTICK_PERIOD_MS);

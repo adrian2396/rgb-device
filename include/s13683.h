@@ -12,8 +12,6 @@
 #define I2C_MASTER_FREQ_HZ          300000              /*!< I2C master clock frequency */
 #define I2C_MASTER_TX_BUF_DISABLE   0                   /*!< I2C master doesn't need buffer */
 #define I2C_MASTER_RX_BUF_DISABLE   0                   /*!< I2C master doesn't need buffer */
-#define I2C_SDA_PULL_UP             1
-#define I2C_SCL_PULL_UP             1
 
 #define S13683_SENSOR_ADDR          0X2A                /*!< slave address for BH1750 sensor */
 #define S13683_CONTROL_BYTE         0X00                /*!< Operation mode */
@@ -28,7 +26,7 @@
 #define ACK_VAL                     0                   /*!< I2C ack value */
 #define NACK_VAL                    1                   /*!< I2C nack value */
 
-#define DATA_LENGTH                 8                   /*!< Data buffer length of test buffer */
+#define DATA_LENGTH                 10                   /*!< Data buffer length of test buffer */
 #define RW_TEST_LENGTH              128                 /*!< Data length for r/w test, [0,DATA_LENGTH] */
 #define DELAY_TIME_BETWEEN_ITEMS_MS 1000                /*!< delay time between different test items */
 
