@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include "esp_log.h"
 #include "driver/i2c.h"
+#include "driver/ledc.h"
 #include "sdkconfig.h"
 
 #define I2C_MASTER_SCL_IO           22                  /*!< gpio number for I2C master clock */

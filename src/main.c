@@ -7,7 +7,6 @@
 
 rgb_sensor *rgb;
 
-
 void app_main() 
 {
     
@@ -26,17 +25,10 @@ void app_main()
     /* I2C master initializaction */
     ESP_ERROR_CHECK(i2c_master_init());
 
-
     /* MQQT start and conected to AWS broker */
 
-    
-
-    /* I2C Switch Task Created */
-
     /* S13683 Task Created */
-    xTaskCreate(s13673_task, "i2c_test_task_0", 1024 * 2, &rgb, 10, NULL);
-
-    /* Driver LED Task Created */
+    xTaskCreate(s13673_task, "s13673_task_0", 1024 * 2, &rgb, 10, NULL);
     
     /* Oled Task Created */
 

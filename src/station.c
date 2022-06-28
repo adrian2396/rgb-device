@@ -51,7 +51,7 @@ void wifi_init_sta(void)
                                                         &event_handler, NULL,
                                                         &instance_any_id);
     esp_event_handler_instance_register(IP_EVENT, IP_EVENT_STA_GOT_IP, 
-                                                        &event_handler,           NULL,
+                                                        &event_handler, NULL,
                                                         &instance_got_ip);
 
     wifi_config_t wifi_config = {
