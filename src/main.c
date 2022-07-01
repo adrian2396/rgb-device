@@ -5,7 +5,9 @@
 #include "station.h"
 #include "tasks.h"
 
-rgb_sensor *rgb;
+pca9548_switch *pca;
+s13683_sensor *rgb;
+
 
 void app_main() 
 {
@@ -23,12 +25,17 @@ void app_main()
     wifi_init_sta();
 
     /* I2C master initializaction */
-    ESP_ERROR_CHECK(i2c_master_init());
+    if (pca9548_init() == ESP_OK) printf("[main.c]: pca9548 i2c comunication success\n");
+    else if (pca9548_init() == ESP_ERR_INVALID_ARG) printf("[main.c]: parameter error\n");
+    else printf("[main.c]: driver install error\n");
 
     /* MQQT start and conected to AWS broker */
 
+    /* PCA9548 Task Created */
+    xTaskCreate(pca9548_task, "pca9548_task", 1024 * 2, &pca, 1, NULL);
+
     /* S13683 Task Created */
-    xTaskCreate(s13673_task, "s13673_task_0", 1024 * 2, &rgb, 10, NULL);
+    //xTaskCreate(s13673_task, "s13673_task", 1024 * 2, &rgb, 10, NULL);
     
     /* Oled Task Created */
 

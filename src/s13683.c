@@ -19,7 +19,7 @@ esp_err_t i2c_master_init(void)
     return i2c_driver_install(i2c_master_port, conf.mode, I2C_MASTER_RX_BUF_DISABLE, I2C_MASTER_TX_BUF_DISABLE, 0);
 }
 
-esp_err_t i2c_master_sensor_test(i2c_port_t i2c_num, rgb_sensor *arg)
+esp_err_t i2c_master_sensor_test(i2c_port_t i2c_num, s13683_sensor *arg)
 {
     int ret;
 
@@ -28,6 +28,8 @@ esp_err_t i2c_master_sensor_test(i2c_port_t i2c_num, rgb_sensor *arg)
     i2c_master_write_byte(cmd, 0x54, ACK_CHECK_EN);                     /* 01010100 => 0x54 */
     i2c_master_write_byte(cmd, 0x00, ACK_CHECK_EN);                     /* 00000000 => 0x00 */    
     i2c_master_write_byte(cmd, 0x89, ACK_CHECK_EN);                     /* 10001001 => 0x89 (ADC reset, standby dis, 1,4 ms)*/
+
+    vTaskDelay(10/portTICK_PERIOD_MS);
 
     cmd = i2c_cmd_link_create();
     i2c_master_start(cmd);                                              /* restart condition */
@@ -49,6 +51,8 @@ esp_err_t i2c_master_sensor_test(i2c_port_t i2c_num, rgb_sensor *arg)
     i2c_master_write_byte(cmd,0x54, ACK_CHECK_EN);                   /* 01010100 => 0x54 */
     i2c_master_write_byte(cmd, 0x03, ACK_CHECK_EN);                  /* 00000011 => 0x03 RED_H register call*/
 
+    vTaskDelay(10/portTICK_PERIOD_MS);
+
     cmd = i2c_cmd_link_create();
     i2c_master_start(cmd);                                           /* restart condition */
     i2c_master_write_byte(cmd, 0x55, ACK_CHECK_EN);                  /* 01010101 => 0x54 */
@@ -64,7 +68,7 @@ esp_err_t i2c_master_sensor_test(i2c_port_t i2c_num, rgb_sensor *arg)
     i2c_master_read_byte(cmd, &arg->read_data[9], NACK_VAL);         /* CH_L READ */
     i2c_master_stop(cmd);
     
-    ret = i2c_master_cmd_begin(i2c_num, cmd, 1000 / portTICK_PERIOD_MS);
+    ret = i2c_master_cmd_begin(i2c_num, cmd, 100 / portTICK_PERIOD_MS);
     i2c_cmd_link_delete(cmd);
 
     return ret;

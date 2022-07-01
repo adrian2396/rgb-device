@@ -35,7 +35,7 @@ typedef struct s13683
 {
     uint8_t read_data[DATA_LENGTH];
     uint16_t data[DATA_LENGTH - 6];
-} rgb_sensor;
+} s13683_sensor;
 
 /**
  *  @brief i2c master initialization
@@ -59,7 +59,7 @@ esp_err_t i2c_master_init(void);
  * --------|---------------------------|--------------------------|---------------------------|
  */
 
-esp_err_t i2c_master_sensor_test(i2c_port_t i2c_num, rgb_sensor *arg);
+esp_err_t i2c_master_sensor_test(i2c_port_t i2c_num, s13683_sensor *arg);
 
 
 

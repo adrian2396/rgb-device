@@ -13,17 +13,48 @@
 
 SemaphoreHandle_t print_mux = NULL;
 
-void s13673_task(rgb_sensor * arg)
+void pca9548_task(pca9548_switch * arg){
+
+    int ret;
+    pca9548_switch sw = *(pca9548_switch*) arg;
+    while (1) {
+        sw.write_channels = 1;
+        ret = pca9548_set_channels(I2C_MASTER_NUM, sw.write_channels);
+        if (ret == ESP_ERR_TIMEOUT) {
+            printf("[tasks]: I2C Timeout write channels\n");
+        } else if (ret == ESP_OK) {
+            printf("[pca9548.c]: set actual channels:  "BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(sw.write_channels));
+            printf("\n");
+        } else {
+            printf("[tasks.c]:  No ack, pca9538 not connected...skip... error : %s\n", esp_err_to_name(ret));
+        }
+        vTaskDelay(1000);
+        ret = pca9548_get_channels(I2C_MASTER_NUM, &sw.read_channels);
+        if (ret == ESP_ERR_TIMEOUT) {
+            printf("[tasks]: I2C Timeout get channels\n");
+        } else if (ret == ESP_OK) {
+            printf("[pca9548.c]: get actual channels:  "BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(sw.read_channels));
+            printf("\n");
+
+        } else {
+            printf("[tasks.c]:  No ack, pca9538 not connected...skip... error: %s\n", esp_err_to_name(ret));
+        }
+        vTaskDelay(1000);
+    }
+    
+}
+
+void s13673_task(s13683_sensor * arg)
 {
     print_mux = xSemaphoreCreateMutex();
     int ret;
-    rgb_sensor rgb = *(rgb_sensor*) arg;
+    s13683_sensor rgb = *(s13683_sensor*) arg;
     int cnt = 0;
     while (1) {
         printf("***************************************\n");
-        if (cnt < 10) printf("*   [tasks]: RGB_TASK test cnt: %d     *\n", cnt++);
-        else if (cnt >= 10 && cnt < 100) printf("*  [tasks]: RGB_TASK test cnt: %d     *\n", cnt++);
-        else if (cnt >= 100 && cnt < 1000) printf("*  [tasks]: RGB_TASK test cnt: %d     *\n", cnt++);;
+        if (cnt < 10) printf("*   [tasks.c]: RGB_TASK test cnt: %d     *\n", cnt++);
+        else if (cnt >= 10 && cnt < 100) printf("*  [tasks.c]: RGB_TASK test cnt: %d     *\n", cnt++);
+        else if (cnt >= 100 && cnt < 1000) printf("*  [tasks.c]: RGB_TASK test cnt: %d     *\n", cnt++);;
         ret = i2c_master_sensor_test(I2C_MASTER_NUM, &rgb);
         xSemaphoreTake(print_mux, portMAX_DELAY);
         if (ret == ESP_ERR_TIMEOUT) {
@@ -74,7 +105,7 @@ void s13673_task(rgb_sensor * arg)
             printf("***************************************\n");
             printf("***************************************\n");
         } else {
-            printf("[tasks]: %s: No ack, sensor not connected...skip...\n", esp_err_to_name(ret));
+            printf("[tasks.c]: %s: No ack, RGB sensor not connected...skip...\n", esp_err_to_name(ret));
         }
         xSemaphoreGive(print_mux);
         vTaskDelay(10000/portTICK_PERIOD_MS);

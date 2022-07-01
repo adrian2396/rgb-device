@@ -4,9 +4,12 @@
 #include <string.h>
 #include <stdint.h>
 
+#include "pca9548.h"
 #include "s13683.h"
 
-void s13673_task(rgb_sensor * arg);
+
+void pca9548_task();
+void s13673_task(s13683_sensor * arg);
 
 
 #endif /* __TASKS_H__ */
