@@ -55,7 +55,9 @@ void s13673_task(s13683_sensor * arg)
         if (cnt < 10) printf("*   [tasks.c]: RGB_TASK test cnt: %d     *\n", cnt++);
         else if (cnt >= 10 && cnt < 100) printf("*  [tasks.c]: RGB_TASK test cnt: %d     *\n", cnt++);
         else if (cnt >= 100 && cnt < 1000) printf("*  [tasks.c]: RGB_TASK test cnt: %d     *\n", cnt++);;
-        ret = i2c_master_sensor_test(I2C_MASTER_NUM, &rgb);
+        ret = s13683_is_operated(I2C_MASTER_NUM);
+        vTaskDelay(4000/portTICK_PERIOD_MS);
+        ret = s13683_read_data(I2C_MASTER_NUM, &rgb);
         xSemaphoreTake(print_mux, portMAX_DELAY);
         if (ret == ESP_ERR_TIMEOUT) {
             printf("[tasks]: I2C Timeout");

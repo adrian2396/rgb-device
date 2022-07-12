@@ -36,11 +36,11 @@ esp_err_t pca9548_set_channels(i2c_port_t i2c_num, uint8_t channels_write){
 
     i2c_cmd_handle_t cmd = i2c_cmd_link_create();           
     i2c_master_start(cmd);                                                          /* start condition */
-    i2c_master_write_byte(cmd, (PCA9548_ADDRESS << 1) | WRITE_BIT, ACK_CHECK_EN);   /* 0x00 slave address */
+    i2c_master_write_byte(cmd, 0xE0, ACK_CHECK_EN);   /* 0x00 slave address */
     i2c_master_write_byte(cmd, channels_write, ACK_CHECK_DIS);                      /* set active channel */
     i2c_master_stop(cmd);                                                           /* stop condition */
 
-    ret = i2c_master_cmd_begin(i2c_num, cmd, 10000 / portTICK_PERIOD_MS);
+    ret = i2c_master_cmd_begin(i2c_num, cmd, 10 / portTICK_PERIOD_MS);
     i2c_cmd_link_delete(cmd);
 
     if (ret != ESP_OK) {
@@ -57,7 +57,7 @@ esp_err_t pca9548_get_channels(i2c_port_t i2c_num, uint8_t *channels_read){
     i2c_cmd_handle_t cmd = i2c_cmd_link_create();           
     i2c_master_start(cmd);                                                          /* start condition */
     i2c_master_write_byte(cmd, (PCA9548_ADDRESS << 1) | READ_BIT, ACK_CHECK_EN);    /* 0x00 slave address */
-    i2c_master_read_byte(cmd, &ch, ACK_VAL);                             /* read active channels */
+    i2c_master_read_byte(cmd, &ch, ACK_VAL);                                        /* read active channels */
     i2c_master_stop(cmd);                                                           /* stop condition */
 
     ret = i2c_master_cmd_begin(i2c_num, cmd, 100 / portTICK_PERIOD_MS);

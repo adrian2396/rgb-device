@@ -40,9 +40,11 @@ typedef struct s13683
 /**
  *  @brief i2c master initialization
  */
-esp_err_t i2c_master_init(void);
+esp_err_t s13683_init(void);
 
+esp_err_t s13683_is_operated(i2c_port_t i2c_num);
 
+esp_err_t s13683_read_data(i2c_port_t i2c_num, s13683_sensor *arg);
 /**
  *  @brief Test code to operate on S13683 sensor
  *
