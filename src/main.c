@@ -30,10 +30,10 @@ void app_main()
     else if (ret == ESP_ERR_INVALID_ARG) printf("[main.c]: parameter error\n");
     else printf("[main.c]: driver install error\n");
 
-    /* MQQT start and conected to AWS broker */
+    /* HTTP Task */
 
     /* PCA9548 Task Created */
-    //xTaskCreate(pca9548_task, "pca9548_task", 1024 * 2, &pca, 1, NULL);
+    xTaskCreate(pca9548_task, "pca9548_task", 1024 * 2, &pca, 1, NULL);
 
     /* S13683 Task Created */
     xTaskCreate(s13673_task, "s13673_task", 1024 * 2, &rgb, 10, NULL);

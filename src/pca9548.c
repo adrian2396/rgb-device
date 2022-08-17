@@ -36,7 +36,7 @@ esp_err_t pca9548_set_channels(i2c_port_t i2c_num, uint8_t channels_write){
 
     i2c_cmd_handle_t cmd = i2c_cmd_link_create();           
     i2c_master_start(cmd);                                                          /* start condition */
-    i2c_master_write_byte(cmd, 0xE0, ACK_CHECK_EN);   /* 0x00 slave address */
+    i2c_master_write_byte(cmd, 0x00, ACK_CHECK_EN);                                 /* 0x00 slave address */
     i2c_master_write_byte(cmd, channels_write, ACK_CHECK_DIS);                      /* set active channel */
     i2c_master_stop(cmd);                                                           /* stop condition */
 

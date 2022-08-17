@@ -18,7 +18,7 @@ void pca9548_task(pca9548_switch * arg){
     int ret;
     pca9548_switch sw = *(pca9548_switch*) arg;
     while (1) {
-        sw.write_channels = 1;
+        sw.write_channels = 0x01;
         ret = pca9548_set_channels(I2C_MASTER_NUM, sw.write_channels);
         if (ret == ESP_ERR_TIMEOUT) {
             printf("[tasks]: I2C Timeout write channels\n");
@@ -113,5 +113,13 @@ void s13673_task(s13683_sensor * arg)
         ++cnt;
     }
     vSemaphoreDelete(print_mux);
+    vTaskDelete(NULL);
+}
+
+void http_task(void *pvParameters)
+{
+    http_rest_with_url();
+    https_async();
+
     vTaskDelete(NULL);
 }

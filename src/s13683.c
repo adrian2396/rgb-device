@@ -27,8 +27,8 @@ esp_err_t s13683_is_operated(i2c_port_t i2c_num) {
     i2c_master_write_byte(cmd, 0x54, ACK_CHECK_EN);                     /* 01010100 => 0x54 (address call + write bit) */
     i2c_master_write_byte(cmd, 0x00, ACK_CHECK_EN);                     /* 00000000 => 0x00 (adress call) */    
     i2c_master_write_byte(cmd, 0x84, ACK_CHECK_EN);                     /* 10001001 => 0x84 (Sleep, Reset and manual setting)*/
-    i2c_master_write_byte(cmd, 0x0C, ACK_CHECK_EN);   
-    i2c_master_write_byte(cmd, 0x30, ACK_CHECK_EN); 
+    i2c_master_write_byte(cmd, 0x0C, ACK_CHECK_EN);                     /* Manual Timing register */
+    i2c_master_write_byte(cmd, 0x30, ACK_CHECK_EN);                     /* Manual Timing register */
 
     i2c_master_start(cmd);                                              /* restart condition */
     i2c_master_write_byte(cmd, 0x54, ACK_CHECK_EN);                     /* 01010100 => 0x54 (address call + write bit) */
