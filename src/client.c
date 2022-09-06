@@ -3,7 +3,7 @@
 esp_err_t _http_event_handler(esp_http_client_event_t *evt)
 {
     static char *output_buffer;  // Buffer to store response of http request from event handler
-    static int output_len;       // Stores number of bytes read
+    //static int output_len;       // Stores number of bytes read
     switch(evt->event_id) {
         case HTTP_EVENT_ERROR:
             printf("[client.c]: HTTP_EVENT_ERROR");
@@ -28,7 +28,7 @@ esp_err_t _http_event_handler(esp_http_client_event_t *evt)
                 free(output_buffer);
                 output_buffer = NULL;
             }
-            output_len = 0;
+            //output_len = 0;
             break;
         case HTTP_EVENT_DISCONNECTED:
             printf("[client.c]: HTTP_EVENT_DISCONNECTED");
@@ -42,7 +42,7 @@ esp_err_t _http_event_handler(esp_http_client_event_t *evt)
                 free(output_buffer);
                 output_buffer = NULL;
             }
-            output_len = 0;
+            //juoutput_len = 0;
             break;
     }
     return ESP_OK;

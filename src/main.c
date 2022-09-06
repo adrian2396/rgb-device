@@ -8,11 +8,10 @@
 pca9548_switch *pca;
 s13683_sensor *rgb;
 
-
 void app_main() 
 {
     
-    /* Connect esp32 to a wifi network (station) */
+    
     //Initialize NVS
     esp_err_t ret = nvs_flash_init();
     if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND) {
@@ -21,7 +20,8 @@ void app_main()
     }
     ESP_ERROR_CHECK(ret);
 
-    printf("[main]: ESP_WIFI_MODE_STA\n");
+    /* Connect esp32 to a wifi network (station) */
+    printf("[main.c]: ESP_WIFI_MODE_STA\n");
     wifi_init_sta();
 
     /* I2C master initializaction */
@@ -31,6 +31,7 @@ void app_main()
     else printf("[main.c]: driver install error\n");
 
     /* HTTP Task */
+    xTaskCreate(&http_task, "http_test_task", 8192, NULL, 5, NULL);
 
     /* PCA9548 Task Created */
     xTaskCreate(pca9548_task, "pca9548_task", 1024 * 2, &pca, 1, NULL);
