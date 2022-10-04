@@ -4,13 +4,13 @@ static TimerHandle_t shutdown_signal_timer;
 static SemaphoreHandle_t shutdown_sema;
 
 
-static void shutdown_signaler(TimerHandle_t xTimer)
+void shutdown_signaler(TimerHandle_t xTimer)
 {
     printf("No data received for %d seconds, signaling shutdown", NO_DATA_TIMEOUT_SEC);
     xSemaphoreGive(shutdown_sema);
 }
 
-static void websocket_event_handler(void *handler_args, esp_event_base_t base, int32_t event_id, void *event_data)
+void websocket_event_handler(void *handler_args, esp_event_base_t base, int32_t event_id, void *event_data)
 {
     esp_websocket_event_data_t *data = (esp_websocket_event_data_t *)event_data;
     switch (event_id) {
@@ -34,10 +34,11 @@ static void websocket_event_handler(void *handler_args, esp_event_base_t base, i
     }
 }
 
-static void websocket_app_start(void)
+void websocket_app_start(void)
 {
     esp_websocket_client_config_t websocket_cfg = {
-         .uri = "wss://websocket.org"
+        .uri = "ws://websocket.org:123",
+        .port = 4567,
     };
 
     shutdown_signal_timer = xTimerCreate("Websocket shutdown timer", NO_DATA_TIMEOUT_SEC * 1000 / portTICK_PERIOD_MS,

@@ -15,8 +15,8 @@
 
 esp_err_t _http_event_handler(esp_http_client_event_t *evt);
 
-static void http_rest_with_url(void);
+void http_rest_with_url(void);
 
-static void https_async(void);
+void https_async(void);
 
 #endif /* __CLIENT_H__ */

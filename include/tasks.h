@@ -6,10 +6,12 @@
 
 #include "pca9548.h"
 #include "s13683.h"
+#include "tps61165.h"
 #include "client.h"
 
 void pca9548_task();
 void s13673_task(s13683_sensor * arg);
+void tps61165_task(tps61165_driver *driver);
 void http_task(void *pvParameters);
 
 #endif /* __TASKS_H__ */

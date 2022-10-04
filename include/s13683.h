@@ -31,6 +31,17 @@
 #define RW_TEST_LENGTH              128                 /*!< Data length for r/w test, [0,DATA_LENGTH] */
 #define DELAY_TIME_BETWEEN_ITEMS_MS 1000                /*!< delay time between different test items */
 
+#define BYTE_TO_BINARY_PATTERN "%c%c%c%c%c%c%c%c"
+#define BYTE_TO_BINARY(byte)  \
+  (byte & 0x80 ? '1' : '0'), \
+  (byte & 0x40 ? '1' : '0'), \
+  (byte & 0x20 ? '1' : '0'), \
+  (byte & 0x10 ? '1' : '0'), \
+  (byte & 0x08 ? '1' : '0'), \
+  (byte & 0x04 ? '1' : '0'), \
+  (byte & 0x02 ? '1' : '0'), \
+  (byte & 0x01 ? '1' : '0') 
+
 typedef struct s13683
 {
     uint8_t read_data[DATA_LENGTH];
@@ -42,11 +53,8 @@ typedef struct s13683
  */
 esp_err_t s13683_init(void);
 
-esp_err_t s13683_is_operated(i2c_port_t i2c_num);
-
-esp_err_t s13683_read_data(i2c_port_t i2c_num, s13683_sensor *arg);
 /**
- *  @brief Test code to operate on S13683 sensor
+ *  @brief Set configuration to operate with sensor
  *
  * 1. set operation mode.
  * ____________________________________________________________________________________________________
@@ -55,13 +63,23 @@ esp_err_t s13683_read_data(i2c_port_t i2c_num, s13683_sensor *arg);
  * | start | slave_addr + wr_bit + ack | Calls control byte + ack  | ADC reset dis, bus release  + ack | stop |
  * ____________________________________________________________________________________________________________
  * 2. wait more than integration time
- * 3. read data
+ */
+
+esp_err_t s13683_is_operated(i2c_port_t i2c_num);
+
+esp_err_t s13683_read_data(i2c_port_t i2c_num, s13683_sensor *arg);
+/**
+ *  @brief Read data from slave
+ * 1. read data
  * ___________________________________________________________________________________________
  * | start | slave_addr + wr_bit + ack | Calls output byte + ack  | slave_addr + rd_bit + ack |
  * --------|---------------------------|--------------------------|---------------------------|
  */
 
 esp_err_t i2c_master_sensor_test(i2c_port_t i2c_num, s13683_sensor *arg);
+
+
+void read_data_to_hex(s13683_sensor *arg);
 
 
 

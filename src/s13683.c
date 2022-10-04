@@ -72,3 +72,49 @@ esp_err_t s13683_read_data(i2c_port_t i2c_num, s13683_sensor *arg){
 
     return ret;
 }
+void read_data_to_hex(s13683_sensor *rgb){
+    
+    /* Get data in 16 bits */
+    rgb->data[0] = rgb->read_data[3] | rgb->read_data[2] << 8;
+    rgb->data[1] = rgb->read_data[5] | rgb->read_data[4] << 8;
+    rgb->data[2] = rgb->read_data[7] | rgb->read_data[6] << 8;
+    rgb->data[3] = rgb->read_data[9] | rgb->read_data[8] << 8;
+    /* Print the data */
+    printf("***************************************\n");
+    printf("* RGB_TASK  MASTER READ S13673 SENSOR *\n");
+    printf("***************************************\n");
+    printf("*   0x01   :   0x%02x   -----   %03d     *\n", rgb->read_data[0], rgb->read_data[0]);
+    printf("*   0x02   :   0x%02x   -----   %03d     *\n", rgb->read_data[1], rgb->read_data[1]);
+    printf("*   RRD_H  :   0x%02x   -----   %03d     *\n", rgb->read_data[2], rgb->read_data[2]);
+    printf("*   RED_L  :   0x%02x   -----   %03d     *\n", rgb->read_data[3], rgb->read_data[3]);
+    printf("*   GREEN_H:   0x%02x   -----   %03d     *\n", rgb->read_data[4], rgb->read_data[4]);
+    printf("*   GREEN_L:   0x%02x   -----   %03d     *\n", rgb->read_data[5], rgb->read_data[5]);
+    printf("*   BLUE_H :   0x%02x   -----   %03d     *\n", rgb->read_data[6], rgb->read_data[6]);
+    printf("*   BLUE_L :   0x%02x   -----   %03d     *\n", rgb->read_data[7], rgb->read_data[7]);
+    printf("*   CH_H   :   0x%02x   -----   %03d     *\n", rgb->read_data[8], rgb->read_data[8]);
+    printf("*   CH_L   :   0x%02x   -----   %03d     *\n", rgb->read_data[9], rgb->read_data[9]);
+    printf("***************************************\n");
+    printf("*   RRD_H           "BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(rgb->read_data[2]));
+    printf("          *\n");
+    printf("*   RED_L           "BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(rgb->read_data[3]));
+    printf("          *\n");
+    printf("*   GREEN_H         "BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(rgb->read_data[4]));
+    printf("          *\n");
+    printf("*   GREEN_L         "BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(rgb->read_data[5]));
+    printf("          *\n");
+    printf("*   BLUE_H          "BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(rgb->read_data[6]));
+    printf("          *\n");
+    printf("*   BLUE_L          "BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(rgb->read_data[7]));
+    printf("          *\n");
+    printf("*   CH_H            "BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(rgb->read_data[8]));
+    printf("          *\n");
+    printf("*   CH_L            "BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(rgb->read_data[9]));
+    printf("          *\n");
+    printf("***************************************\n");
+    printf("*   RED   :    %05d                  *\n",rgb->data[0]);
+    printf("*   GREEN :    %05d                  *\n",rgb->data[1]);
+    printf("*   BLUE  :    %05d                  *\n",rgb->data[2]);
+    printf("*   CH    :    %05d                  *\n",rgb->data[3]);
+    printf("***************************************\n");
+    printf("***************************************\n");
+}

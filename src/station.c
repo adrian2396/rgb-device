@@ -4,8 +4,8 @@
 static EventGroupHandle_t s_wifi_event_group;
 static int s_retry_num = 0;
 
-const char *ssid = "adrian";
-const char *password = "123456789a";
+const char *ssid = "rgb-device";
+const char *password = "123456789";
 
 
 void event_handler(void* arg, esp_event_base_t event_base,

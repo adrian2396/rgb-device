@@ -4,14 +4,15 @@
 #include "sdkconfig.h"
 #include "station.h"
 #include "tasks.h"
+#include "webSocket.h"
 
 pca9548_switch *pca;
 s13683_sensor *rgb;
+tps61165_driver *drivers;
+
 
 void app_main() 
-{
-    
-    
+{    
     //Initialize NVS
     esp_err_t ret = nvs_flash_init();
     if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND) {
@@ -30,15 +31,21 @@ void app_main()
     else if (ret == ESP_ERR_INVALID_ARG) printf("[main.c]: parameter error\n");
     else printf("[main.c]: driver install error\n");
 
+    /* Websocket Init */
+    websocket_app_start();
+
     /* HTTP Task */
-    xTaskCreate(&http_task, "http_test_task", 8192, NULL, 5, NULL);
+    //xTaskCreate(&http_task, "http_test_task", 8192, NULL, 5, NULL);
 
     /* PCA9548 Task Created */
-    xTaskCreate(pca9548_task, "pca9548_task", 1024 * 2, &pca, 1, NULL);
+    //xTaskCreate(pca9548_task, "pca9548_task", 1024 * 2, &pca, 1, NULL);
 
     /* S13683 Task Created */
     xTaskCreate(s13673_task, "s13673_task", 1024 * 2, &rgb, 10, NULL);
     
+    /* TPS61165 Task Created */
+    xTaskCreate(tps61165_task, "tps61165_task", 1024 * 2, &rgb, 10, NULL);
+
     /* Oled Task Created */
 
     /* Buttons Task Created */
