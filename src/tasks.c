@@ -1,22 +1,11 @@
 #include "tasks.h"
 
-#define BYTE_TO_BINARY_PATTERN "%c%c%c%c%c%c%c%c"
-#define BYTE_TO_BINARY(byte)  \
-  (byte & 0x80 ? '1' : '0'), \
-  (byte & 0x40 ? '1' : '0'), \
-  (byte & 0x20 ? '1' : '0'), \
-  (byte & 0x10 ? '1' : '0'), \
-  (byte & 0x08 ? '1' : '0'), \
-  (byte & 0x04 ? '1' : '0'), \
-  (byte & 0x02 ? '1' : '0'), \
-  (byte & 0x01 ? '1' : '0') 
 
 SemaphoreHandle_t print_mux = NULL;
 
-void pca9548_task(pca9548_switch * arg){
-
+TaskFunction_t pca9548_task(pca9548_switch * pca){
     int ret;
-    pca9548_switch sw = *(pca9548_switch*) arg;
+    pca9548_switch sw = *(pca9548_switch*) pca;
     while (1) {
         sw.write_channels = 0x01;
         ret = pca9548_set_channels(I2C_MASTER_NUM, sw.write_channels);
@@ -44,7 +33,7 @@ void pca9548_task(pca9548_switch * arg){
     
 }
 
-void s13673_task(s13683_sensor * arg)
+TaskFunction_t s13673_task(s13683_sensor * arg)
 {
     print_mux = xSemaphoreCreateMutex();
     int ret;
@@ -63,49 +52,7 @@ void s13673_task(s13683_sensor * arg)
         if (ret == ESP_ERR_TIMEOUT) {
             printf("[tasks]: I2C Timeout");
         } else if (ret == ESP_OK) {
-            /* Get data in 16 bits */
-            rgb.data[0] = rgb.read_data[3] | rgb.read_data[2] << 8;
-            rgb.data[1] = rgb.read_data[5] | rgb.read_data[4] << 8;
-            rgb.data[2] = rgb.read_data[7] | rgb.read_data[6] << 8;
-            rgb.data[3] = rgb.read_data[9] | rgb.read_data[8] << 8;
-            /* Print the data */
-            printf("***************************************\n");
-            printf("* RGB_TASK  MASTER READ S13673 SENSOR *\n");
-            printf("***************************************\n");
-            printf("*   0x01   :   0x%02x   -----   %03d     *\n", rgb.read_data[0], rgb.read_data[0]);
-            printf("*   0x02   :   0x%02x   -----   %03d     *\n", rgb.read_data[1], rgb.read_data[1]);
-            printf("*   RRD_H  :   0x%02x   -----   %03d     *\n", rgb.read_data[2], rgb.read_data[2]);
-            printf("*   RED_L  :   0x%02x   -----   %03d     *\n", rgb.read_data[3], rgb.read_data[3]);
-            printf("*   GREEN_H:   0x%02x   -----   %03d     *\n", rgb.read_data[4], rgb.read_data[4]);
-            printf("*   GREEN_L:   0x%02x   -----   %03d     *\n", rgb.read_data[5], rgb.read_data[5]);
-            printf("*   BLUE_H :   0x%02x   -----   %03d     *\n", rgb.read_data[6], rgb.read_data[6]);
-            printf("*   BLUE_L :   0x%02x   -----   %03d     *\n", rgb.read_data[7], rgb.read_data[7]);
-            printf("*   CH_H   :   0x%02x   -----   %03d     *\n", rgb.read_data[8], rgb.read_data[8]);
-            printf("*   CH_L   :   0x%02x   -----   %03d     *\n", rgb.read_data[9], rgb.read_data[9]);
-            printf("***************************************\n");
-            printf("*   RRD_H           "BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(rgb.read_data[2]));
-            printf("          *\n");
-            printf("*   RED_L           "BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(rgb.read_data[3]));
-            printf("          *\n");
-            printf("*   GREEN_H         "BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(rgb.read_data[4]));
-            printf("          *\n");
-            printf("*   GREEN_L         "BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(rgb.read_data[5]));
-            printf("          *\n");
-            printf("*   BLUE_H          "BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(rgb.read_data[6]));
-            printf("          *\n");
-            printf("*   BLUE_L          "BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(rgb.read_data[7]));
-            printf("          *\n");
-            printf("*   CH_H            "BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(rgb.read_data[8]));
-            printf("          *\n");
-            printf("*   CH_L            "BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(rgb.read_data[9]));
-            printf("          *\n");
-            printf("***************************************\n");
-            printf("*   RED   :    %05d                  *\n",rgb.data[0]);
-            printf("*   GREEN :    %05d                  *\n",rgb.data[1]);
-            printf("*   BLUE  :    %05d                  *\n",rgb.data[2]);
-            printf("*   CH    :    %05d                  *\n",rgb.data[3]);
-            printf("***************************************\n");
-            printf("***************************************\n");
+            read_data_to_hex(&rgb);
         } else {
             printf("[tasks.c]: %s: No ack, RGB sensor not connected...skip...\n", esp_err_to_name(ret));
         }
@@ -117,14 +64,19 @@ void s13673_task(s13683_sensor * arg)
     vTaskDelete(NULL);
 }
 
-void tps61165_task(tps61165_driver *driver){
+TaskFunction_t tps61165_task(tps61165_driver *driver)
+{
+    while (1)
+    {
+        printf("i2c switch task");
+    }
     
 }
 
-void http_task(void *pvParameters)
+TaskFunction_t  http_task(void *pvParameters)
 {
-    http_rest_with_url();
-    https_async();
-
-    vTaskDelete(NULL);
+    while (1)
+    {
+        printf("http task");
+    }
 }

@@ -9,9 +9,9 @@
 #include "tps61165.h"
 #include "client.h"
 
-void pca9548_task();
-void s13673_task(s13683_sensor * arg);
-void tps61165_task(tps61165_driver *driver);
-void http_task(void *pvParameters);
+TaskFunction_t  pca9548_task(pca9548_switch *pca);
+TaskFunction_t  s13673_task(s13683_sensor * arg);
+TaskFunction_t  tps61165_task(tps61165_driver *driver);
+TaskFunction_t  http_task(void *pvParameters);
 
 #endif /* __TASKS_H__ */
