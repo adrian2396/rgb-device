@@ -6,19 +6,22 @@
 #include "tasks.h"
 #include "webSocket.h"
 
-pca9548 *pca;
-s13683 *rgb;
-tps61165 *tps;
 
-rgb_device device = {&rgb, &pca, &tps}; 
+
 
 
 void app_main() 
 {
-    /* Initialize sctruct */
-    device.device_connected = false;
-    device.start_calibration = false;
-    device.start_measures = false;
+    pca9548 *pca;
+    s13683 *rgb;
+    tps61165 *tps;
+
+    rgb_device device = {
+      .rgb = &rgb, .pca = &pca, .tps = &tps,
+      .device_connected = false,
+      .start_calibration =  false,
+      .start_measures = false
+    }; 
 
     /* Initialize NVS */
     esp_err_t ret = nvs_flash_init();
@@ -41,10 +44,10 @@ void app_main()
     /* set configuration in all rgb sensors */
 
     /* Device Task */
-    xTaskCreate(&device_task, "measures_task", 8192, &device, 5, NULL);
+    xTaskCreate(device_task, "measures_task", 8192, &device, 5, NULL);
 
     /* MQQT Task */
-    //xTaskCreate(&mqtt_task, "mqtt_task", 8192, &device, 5, NULL);
+    //xTaskCreate(mqtt_task, "mqtt_task", 8192, &device, 5, NULL);
 
 }
 

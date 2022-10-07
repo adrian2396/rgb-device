@@ -7,12 +7,12 @@
 #include "driver/ledc.h"
 #include "sdkconfig.h"
 
-#define I2C_MASTER_SCL_IO           22                  /*!< gpio number for I2C master clock */
-#define I2C_MASTER_SDA_IO           21                  /*!< gpio number for I2C master data  */
-#define I2C_MASTER_NUM              0                   /*!< I2C port number for master dev */
-#define I2C_MASTER_FREQ_HZ          300000              /*!< I2C master clock frequency */
-#define I2C_MASTER_TX_BUF_DISABLE   0                   /*!< I2C master doesn't need buffer */
-#define I2C_MASTER_RX_BUF_DISABLE   0                   /*!< I2C master doesn't need buffer */
+#define S13683_SCL_IO           22                  /*!< gpio number for I2C master clock */
+#define S13683_SDA_IO           21                  /*!< gpio number for I2C master data  */
+#define S13683_MASTER_NUM              0                   /*!< I2C port number for master dev */
+#define S13683_MASTER_FREQ_HZ          300000              /*!< I2C master clock frequency */
+#define S13683_MASTER_TX_BUF_DISABLE   0                   /*!< I2C master doesn't need buffer */
+#define S13683_MASTER_RX_BUF_DISABLE   0                   /*!< I2C master doesn't need buffer */
 
 #define S13683_SENSOR_ADDR          0X2A                /*!< slave address for BH1750 sensor */
 #define S13683_CONTROL_BYTE         0X00                /*!< Operation mode */
