@@ -8,7 +8,7 @@ TaskFunction_t pca9548_task(pca9548_switch * pca){
     pca9548_switch sw = *(pca9548_switch*) pca;
     while (1) {
         sw.write_channels = 0x01;
-        ret = pca9548_set_channels(I2C_MASTER_NUM, sw.write_channels);
+        ret = pca9548_set_channels(I2C_MASTER_NUM, &sw);
         if (ret == ESP_ERR_TIMEOUT) {
             printf("[tasks]: I2C Timeout write channels\n");
         } else if (ret == ESP_OK) {
@@ -18,7 +18,7 @@ TaskFunction_t pca9548_task(pca9548_switch * pca){
             printf("[tasks.c]:  No ack, pca9538 not connected...skip... error : %s\n", esp_err_to_name(ret));
         }
         vTaskDelay(1000);
-        ret = pca9548_get_channels(I2C_MASTER_NUM, &sw.read_channels);
+        ret = pca9548_get_channels(I2C_MASTER_NUM, &sw);
         if (ret == ESP_ERR_TIMEOUT) {
             printf("[tasks]: I2C Timeout get channels\n");
         } else if (ret == ESP_OK) {

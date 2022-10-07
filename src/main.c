@@ -32,7 +32,7 @@ void app_main()
     else printf("[main.c]: driver install error\n");
 
     /* Websocket Init */
-    websocket_app_start();
+    //websocket_app_start();
 
     /* HTTP Task */
     //xTaskCreate(&http_task, "http_test_task", 8192, NULL, 5, NULL);
@@ -41,10 +41,10 @@ void app_main()
     xTaskCreate(pca9548_task, "pca9548_task", 1024 * 2, &pca, 1, NULL);
 
     /* S13683 Task Created */
-    xTaskCreate(s13673_task, "s13673_task", 1024 * 2, &rgb, 10, NULL);
+    //xTaskCreate(s13673_task, "s13673_task", 1024 * 2, &rgb, 10, NULL);
     
     /* TPS61165 Task Created */
-    xTaskCreate(tps61165_task, "tps61165_task", 1024 * 2, &drivers, 10, NULL);
+    //xTaskCreate(tps61165_task, "tps61165_task", 1024 * 2, &drivers, 10, NULL);
 
     /* Oled Task Created */
 

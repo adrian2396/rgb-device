@@ -117,4 +117,8 @@ void read_data_to_hex(s13683_sensor *rgb){
     printf("*   CH    :    %05d                  *\n",rgb->data[3]);
     printf("***************************************\n");
     printf("***************************************\n");
+
+    char hexcol[16];
+
+    snprintf(hexcol, sizeof hexcol, "%02x%02x%02x", rgb->read_data[0], rgb->read_data[1], rgb->read_data[1]);
 }
