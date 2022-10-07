@@ -6,14 +6,21 @@
 #include "tasks.h"
 #include "webSocket.h"
 
-pca9548_switch *pca;
-s13683_sensor *rgb;
-tps61165_driver *drivers;
+pca9548 *pca;
+s13683 *rgb;
+tps61165 *tps;
+
+rgb_device device = {&rgb, &pca, &tps}; 
 
 
 void app_main() 
-{    
-    //Initialize NVS
+{
+    /* Initialize sctruct */
+    device.device_connected = false;
+    device.start_calibration = false;
+    device.start_measures = false;
+
+    /* Initialize NVS */
     esp_err_t ret = nvs_flash_init();
     if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND) {
       ESP_ERROR_CHECK(nvs_flash_erase());
@@ -26,29 +33,19 @@ void app_main()
     wifi_init_sta();
 
     /* I2C master initializaction */
-    ret = s13683_init();
+    ret = pca9548_init();
     if (ret == ESP_OK) printf("[main.c]: pca9548 i2c comunication success\n");
     else if (ret == ESP_ERR_INVALID_ARG) printf("[main.c]: parameter error\n");
     else printf("[main.c]: driver install error\n");
 
-    /* Websocket Init */
-    //websocket_app_start();
+    /* set configuration in all rgb sensors */
 
-    /* HTTP Task */
-    //xTaskCreate(&http_task, "http_test_task", 8192, NULL, 5, NULL);
+    /* Device Task */
+    xTaskCreate(&device_task, "measures_task", 8192, &device, 5, NULL);
 
-    /* PCA9548 Task Created */
-    xTaskCreate(pca9548_task, "pca9548_task", 1024 * 2, &pca, 1, NULL);
+    /* MQQT Task */
+    //xTaskCreate(&mqtt_task, "mqtt_task", 8192, &device, 5, NULL);
 
-    /* S13683 Task Created */
-    //xTaskCreate(s13673_task, "s13673_task", 1024 * 2, &rgb, 10, NULL);
-    
-    /* TPS61165 Task Created */
-    //xTaskCreate(tps61165_task, "tps61165_task", 1024 * 2, &drivers, 10, NULL);
-
-    /* Oled Task Created */
-
-    /* Buttons Task Created */
 }
 
 

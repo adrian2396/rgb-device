@@ -30,7 +30,7 @@ void tps61165_set_duty(ledc_mode_t speed_mode, ledc_channel_t channel, uint32_t 
     ledc_update_duty(speed_mode, channel);
 }
 
-void tps61165_calibration(ledc_mode_t speed_mode, ledc_channel_t channel_A, ledc_channel_t channel_B, tps61165_driver driver){
+void tps61165_calibration(ledc_mode_t speed_mode, ledc_channel_t channel_A, ledc_channel_t channel_B, tps61165 driver){
     
     int ret;
     int well = 0;

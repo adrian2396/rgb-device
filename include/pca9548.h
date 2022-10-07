@@ -23,11 +23,11 @@
 #define ACK_VAL                     0                   /*!< I2C ack value */
 #define NACK_VAL                    1   
 
-typedef struct pca9548
+typedef struct pca9548_switch
 {
     uint8_t write_channels;
     uint8_t read_channels;
-} pca9548_switch;
+} pca9548;
 
 /**
  *  @brief i2c master initialization
@@ -47,7 +47,7 @@ esp_err_t pca9548_init(void);
  * @param channels Channel flags, combination of TCA9548_CHANNELn
  * @return `ESP_OK` on success
  */
-esp_err_t pca9548_set_channels(i2c_port_t i2c_num, pca9548_switch * pca);
+esp_err_t pca9548_set_channels(i2c_port_t i2c_num, pca9548 * pca);
 
 
 /**
@@ -62,7 +62,7 @@ esp_err_t pca9548_set_channels(i2c_port_t i2c_num, pca9548_switch * pca);
  * @param[out] channels Channel flags, combination of TCA9548_CHANNELn
  * @return `ESP_OK` on success
  */
-esp_err_t pca9548_get_channels(i2c_port_t i2c_num, pca9548_switch * pca);
+esp_err_t pca9548_get_channels(i2c_port_t i2c_num, pca9548 * pca);
 
 #endif /* __PCA9548_H__ */
 

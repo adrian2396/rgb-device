@@ -20,7 +20,7 @@ esp_err_t pca9548_init(void)
     return i2c_driver_install(i2c_master_port, conf.mode, I2C_MASTER_RX_BUF_DISABLE, I2C_MASTER_TX_BUF_DISABLE, 0);
 }
 
-esp_err_t pca9548_set_channels(i2c_port_t i2c_num, pca9548_switch * pca){
+esp_err_t pca9548_set_channels(i2c_port_t i2c_num, pca9548 * pca){
     int ret;
 
     i2c_cmd_handle_t cmd = i2c_cmd_link_create();           
@@ -39,7 +39,7 @@ esp_err_t pca9548_set_channels(i2c_port_t i2c_num, pca9548_switch * pca){
     return ret;
 }
 
-esp_err_t pca9548_get_channels(i2c_port_t i2c_num, pca9548_switch * pca){
+esp_err_t pca9548_get_channels(i2c_port_t i2c_num, pca9548 * pca){
     int ret;
 
     i2c_cmd_handle_t cmd = i2c_cmd_link_create();           

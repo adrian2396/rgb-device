@@ -46,7 +46,7 @@ esp_err_t s13683_is_operated(i2c_port_t i2c_num) {
     return ret;
 
 }
-esp_err_t s13683_read_data(i2c_port_t i2c_num, s13683_sensor *arg){
+esp_err_t s13683_read_data(i2c_port_t i2c_num, s13683 *arg){
     int ret;
 
     i2c_cmd_handle_t cmd = i2c_cmd_link_create();
@@ -72,7 +72,7 @@ esp_err_t s13683_read_data(i2c_port_t i2c_num, s13683_sensor *arg){
 
     return ret;
 }
-void read_data_to_hex(s13683_sensor *rgb){
+void read_data_to_hex(s13683 *rgb){
     
     /* Get data in 16 bits */
     rgb->data[0] = rgb->read_data[3] | rgb->read_data[2] << 8;

@@ -31,6 +31,8 @@
 #define RW_TEST_LENGTH              128                 /*!< Data length for r/w test, [0,DATA_LENGTH] */
 #define DELAY_TIME_BETWEEN_ITEMS_MS 1000                /*!< delay time between different test items */
 
+#define N_RGB_SENSORS               8
+
 #define BYTE_TO_BINARY_PATTERN "%c%c%c%c%c%c%c%c"
 #define BYTE_TO_BINARY(byte)  \
   (byte & 0x80 ? '1' : '0'), \
@@ -42,12 +44,16 @@
   (byte & 0x02 ? '1' : '0'), \
   (byte & 0x01 ? '1' : '0') 
 
-typedef struct s13683
+typedef struct s13683_sensor
 {
-    uint8_t read_data[DATA_LENGTH];
-    uint16_t data[DATA_LENGTH - 6];
-    
-} s13683_sensor;
+    uint8_t read_data[DATA_LENGTH];     /* save raw data from rgb sensros (R, G, B, CH) */
+    uint16_t data[N_RGB_SENSORS];       /* save hex data (max 8 sensor) */
+
+    int start_measures;
+    int start_calibration;
+
+    int active_sensors[N_RGB_SENSORS];  /* save active sensors got from ui */
+} s13683;
 
 /**
  *  @brief i2c master initialization
@@ -68,7 +74,7 @@ esp_err_t s13683_init(void);
 
 esp_err_t s13683_is_operated(i2c_port_t i2c_num);
 
-esp_err_t s13683_read_data(i2c_port_t i2c_num, s13683_sensor *arg);
+esp_err_t s13683_read_data(i2c_port_t i2c_num, s13683 *arg);
 /**
  *  @brief Read data from slave
  * 1. read data
@@ -77,10 +83,10 @@ esp_err_t s13683_read_data(i2c_port_t i2c_num, s13683_sensor *arg);
  * --------|---------------------------|--------------------------|---------------------------|
  */
 
-esp_err_t i2c_master_sensor_test(i2c_port_t i2c_num, s13683_sensor *arg);
+esp_err_t i2c_master_sensor_test(i2c_port_t i2c_num, s13683 *arg);
 
 
-void read_data_to_hex(s13683_sensor *arg);
+void read_data_to_hex(s13683 *arg);
 
 
 

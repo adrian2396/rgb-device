@@ -22,13 +22,13 @@
 
 typedef struct TPS61165
 {
-    s13683_sensor rgb;
+    s13683 rgb;
     uint8_t duty[ROWS][COLUMNS];
-} tps61165_driver;
+} tps61165;
 
 void tps61165_init(void);
 void tps61165_set_duty();
-void tps61165_calibration(ledc_mode_t speed_mode, ledc_channel_t channel,  ledc_channel_t channel_B, tps61165_driver driver);
+void tps61165_calibration(ledc_mode_t speed_mode, ledc_channel_t channel,  ledc_channel_t channel_B, tps61165 driver);
 
 
 #endif /* __TPS61165_H__ */

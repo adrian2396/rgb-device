@@ -7,11 +7,11 @@
 #include "pca9548.h"
 #include "s13683.h"
 #include "tps61165.h"
+#include "device.h"
 #include "client.h"
 
-TaskFunction_t  pca9548_task(pca9548_switch *pca);
-TaskFunction_t  s13673_task(s13683_sensor * arg);
-TaskFunction_t  tps61165_task(tps61165_driver *driver);
-TaskFunction_t  http_task(void *pvParameters);
+TaskFunction_t  device_task(rgb_device *device);
+TaskFunction_t mqtt_task(rgb_device * device);
+
 
 #endif /* __TASKS_H__ */
